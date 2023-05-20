@@ -1,9 +1,11 @@
 
 export class Record {
-  timeStamp : number;
-  data : string;
+  weather: string;
+  emotion: string;
+  emotionDetail: string;
+  thanksDairy: string[];
 }
 
 export class Diary {
-  diary : string;
+  diary : string[];
 }

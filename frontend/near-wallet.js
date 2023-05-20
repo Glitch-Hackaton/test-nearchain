@@ -75,9 +75,9 @@ export class Wallet {
       account_id: contractId,
       method_name: method,
       args_base64: Buffer.from(JSON.stringify(args)).toString('base64'),
-      finality: 'optimistic',
+      finality: 'final',
     });
-    return JSON.parse(Buffer.from(res.result).toString());
+    return JSON.parse(Buffer.from(res?.result).toString());
   }
 
   // Call a method that changes the contract's state
@@ -98,8 +98,9 @@ export class Wallet {
         },
       ],
     });
-
-    return providers.getTransactionLastResult(outcome)
+    console.log("outcome : ", outcome);
+    // return providers.getTransactionLastResult(outcome)
+    return outcome;
   }
 
   // Get transaction result from the network

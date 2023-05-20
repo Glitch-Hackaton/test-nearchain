@@ -4,14 +4,13 @@ import { Wallet } from './near-wallet'
 
 // When creating the wallet you can choose to create an access key, so the user
 // can skip signing non-payable methods when interacting with the contract
-const wallet = new Wallet({ createAccessKeyFor: process.env.CONTRACT_NAME })
-
+const wallet = new Wallet({ createAccessKeyFor: "dev-1684566412371-16245245725402" })
+console.log(wallet)
 // Abstract the logic of interacting with the contract to simplify your project
 const contract = new Contract({
-  contractId: process.env.CONTRACT_NAME,
+  contractId: `dev-1684566412371-16245245725402`,
   walletToUse: wallet,
 });
-
 
 // Setup on page load
 window.onload = async () => {
@@ -85,11 +84,13 @@ async function signedInFlow() {
 
 
 window.addRecord = async function(){
-  const timeStamp = "201012312"
-  const data = "json string ~ hihi"
+  const timeStamp = "1233";
+  const weather = "sunny";
+  const emotion = "happy";
+  const emotionDetail = "mad happy";
+  const thanksDairy = ["a","b","c"]
   try {
-    console.log(contract, 'contract')
-    const result = await contract.addRecode(timeStamp, data)
+    const result = await contract.addRecode( timeStamp, weather, emotion, emotionDetail, thanksDairy)
     console.log("결과")
     console.log(result)
   } catch (e) {
@@ -104,7 +105,42 @@ window.addRecord = async function(){
 }
 
 window.getRecode = async function(){
-  const result = await contract.getRecode();
-  console.log(result)
-  alert(result)
+  const accountId = wallet.accountId;
+  const startDate = 1233
+  const endDate = 1234
+  try{
+    const result = await contract.getRecode(accountId, startDate, endDate);
+
+    console.log(result)
+  }catch (e){
+    console.log(e)
+  }
+}
+
+
+window.setDiary = async function(){
+  const diaryTypes = ["감사","3줄","날씨"]
+  try {
+    const result = await contract.setDiary(diaryTypes)
+    console.log(result)
+  } catch (e) {
+    console.error(e)
+    alert(
+        'Something went wrong! ' +
+        'Maybe you need to sign out and back in? ' +
+        'Check your browser console for more info.'
+    )
+    throw e
+  }
+}
+
+window.getDiary = async function(){
+  const id = wallet.accountId;
+  console.log(id)
+  try {
+    const result = await contract.getDiary(id);
+    console.log(result)
+  }catch (e){
+    console.log(e)
+  }
 }
